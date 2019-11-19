@@ -1,6 +1,8 @@
+LIBRARY dinput8
 EXPORTS
-DirectInput8Create=__E__0__ @1
-DllCanUnloadNow=__E__1__ @2
-DllGetClassObject=__E__2__ @3
-DllRegisterServer=__E__3__ @4
-DllUnregisterServer=__E__4__ @5
+	DirectInput8Create=PROXY_DirectInput8Create @1
+	DllCanUnloadNow=PROXY_DllCanUnloadNow @2
+	DllGetClassObject=PROXY_DllGetClassObject @3
+	DllRegisterServer=PROXY_DllRegisterServer @4
+	DllUnregisterServer=PROXY_DllUnregisterServer @5
+	GetdfDIJoystick=PROXY_GetdfDIJoystick @6

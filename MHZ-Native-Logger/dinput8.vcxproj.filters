@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="keyboard.c" />
-    <ClCompile Include="proxy_idi.c" />
-    <ClCompile Include="proxy_idid.c" />
-    <ClCompile Include="dinput8.c" />
     <ClCompile Include="Logger.cpp">
       <Filter>logger</Filter>
     </ClCompile>
@@ -20,12 +16,9 @@
     <ClCompile Include="memory\pattern.cpp">
       <Filter>memory</Filter>
     </ClCompile>
+    <ClCompile Include="dinput8.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="dinputproxy.h" />
-    <ClInclude Include="Logger.h">
-      <Filter>logger</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.hpp">
       <Filter>logger</Filter>
     </ClInclude>
@@ -51,8 +44,8 @@
     <ClInclude Include="common.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="dinput8.def" />
     <None Include="packages.config" />
+    <None Include="dinput8.def" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="logger">

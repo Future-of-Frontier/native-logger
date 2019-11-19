@@ -1,22 +1,12 @@
 #include "Logger.hpp"
 
-
-extern "C" {
-
-	int WINAPI LoggerMain(LPVOID lpParameter)
-	{
-		Logger::LoggerMainCPP();
-		return 0;
-	}
-}
-
-void Logger::LoggerMainCPP()
+int Logger::LoggerMain(LPVOID lpParamater)
 {
 	SetupLogfile();
 	if (MH_Initialize() != MH_OK)
 	{
 		Log("Minhook failed to init!");
-		return;
+		return -1;
 	}
 	
 	// Todo here:
@@ -25,6 +15,7 @@ void Logger::LoggerMainCPP()
 	// 3. Log packets!
 	bool gameLoaded = false;
 	HMODULE game_dll = nullptr;
+	Log("[INFO] Waiting for game dll to load...");
 	while (!gameLoaded)
 	{
 		auto sd_module = GetModuleHandle("mhfo.dll");
@@ -41,6 +32,7 @@ void Logger::LoggerMainCPP()
 		}
 		Sleep(1000);
 	}
+	Log("[INFO] Module found! Handle @ %X", game_dll);
 
 	memory::pattern_batch crypt_batch;
 	crypt_batch.add("Encrypt Function", "E8 ? ? ? ? 8B 97 ? ? ? ? 8B 84 97 ? ? ? ?", [](memory::handle ptr)
@@ -58,11 +50,15 @@ void Logger::LoggerMainCPP()
 	if (!enc || !dec)
 	{
 		Log("[ERROR] Finding enc or dec routines failed!");
-		Log("[ERROR] Found enc %i; Found dec %i", enc, dec);
-		return;
+		Log("[ERROR] Found enc %X; Found dec %X", enc, dec);
+		return -1;
+	}
+	else
+	{
+		Log("[DEBUG] Found enc: %X; Found dec: %X", enc, dec);
 	}
 	
-	return;
+	return 0;
 }
 
 void Logger::SetupLogfile()

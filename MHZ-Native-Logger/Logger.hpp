@@ -10,7 +10,7 @@ typedef int(__fastcall *PacketFn)(int, char*, int, char*, int, unsigned short*);
 
 namespace Logger
 {
-	void LoggerMainCPP();
+	int LoggerMain(LPVOID);
 	void SetupLogfile();
 	void Log(std::string fmt, ...);
 
