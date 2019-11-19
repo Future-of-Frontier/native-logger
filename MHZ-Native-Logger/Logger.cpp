@@ -33,7 +33,8 @@ int Logger::LoggerMain()
 		Sleep(1000);
 	}
 	Log("[INFO] Module found! Handle @ %X", game_dll);
-
+	Log("[INFO] Waiting for unpack...");
+	Sleep(10000); // Sleep 10 sec...
 	memory::pattern_batch crypt_batch;
 	crypt_batch.add("Encrypt Function", "E8 ? ? ? ? 8B 97 ? ? ? ? 8B 84 97 ? ? ? ?", [](memory::handle ptr)
 	{
