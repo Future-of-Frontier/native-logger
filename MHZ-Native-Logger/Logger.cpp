@@ -1,6 +1,6 @@
 #include "Logger.hpp"
 
-int Logger::LoggerMain(LPVOID lpParamater)
+int Logger::LoggerMain()
 {
 	SetupLogfile();
 	if (MH_Initialize() != MH_OK)
@@ -58,6 +58,11 @@ int Logger::LoggerMain(LPVOID lpParamater)
 		Log("[DEBUG] Found enc: %X; Found dec: %X", enc, dec);
 	}
 	
+
+	while (true)
+	{
+		Sleep(1000);
+	}
 	return 0;
 }
 
@@ -66,30 +71,36 @@ void Logger::SetupLogfile()
 	if (!logSetup)
 	{
 		log_out.open("MHZLogger.log", 'r');
-		log_out << "[INIT] MHZLogger";
+		log_out << "[INIT] MHZLogger" << std::endl;
+		log_out.flush();
+		logSetup = true;
 	}
 }
 
-void Logger::Log(std::string fmt, ...)
+void Logger::Log(std::string fmt_str, ...)
 {
 	if (logSetup)
 	{
-		int n, size = 100;
-		std::string str;
+		int final_n, n = ((int)fmt_str.size()) * 2; /* Reserve two times as much as the length of the fmt_str */
+		std::unique_ptr<char[]> formatted;
 		va_list ap;
-
 		while (1) {
-			str.resize(size);
-			va_start(ap, fmt);
-			int n = vsnprintf(&str[0], size, fmt.c_str(), ap);
+			formatted.reset(new char[n]); /* Wrap the plain char array into the unique_ptr */
+			strcpy(&formatted[0], fmt_str.c_str());
+			va_start(ap, fmt_str);
+			final_n = vsnprintf(&formatted[0], n, fmt_str.c_str(), ap);
 			va_end(ap);
-
-			if (n > -1 && n < size)
-				Logger::log_out << str.c_str();
-			if (n > -1)
-				size = n + 1;
+			if (final_n < 0 || final_n >= n)
+				n += abs(final_n - n + 1);
 			else
-				size *= 2;
+				break;
 		}
+
+		log_out << std::string(formatted.get()).c_str() << std::endl;
+		log_out.flush();
+	}
+	else
+	{
+		MessageBox(nullptr, "Log called before setup?!", "uwu", MB_OK);
 	}
 }

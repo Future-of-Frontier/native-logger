@@ -3,6 +3,7 @@
 HINSTANCE hLThis = 0;
 FARPROC p[6];
 HINSTANCE hL = 0;
+bool running = false;
 
 BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason,LPVOID v)
 {
@@ -17,9 +18,10 @@ BOOL WINAPI DllMain(HINSTANCE hInst, DWORD reason,LPVOID v)
 		}
 		char buf[64];
 		GetModuleFileName(nullptr, (LPSTR)&buf, 64);
-		if (strcmp(buf, "mhf.exe"))
+		if (strcmp(buf, "mhf.exe") && !running)
 		{
 			CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)&Logger::LoggerMain, NULL, 0, NULL);
+			running = true;
 		}
 	}
 	
