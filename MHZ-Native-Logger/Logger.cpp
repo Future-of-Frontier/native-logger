@@ -23,7 +23,45 @@ void Logger::LoggerMainCPP()
 	// 1. Locate crypt / decrypt
 	// 2. Minhook them
 	// 3. Log packets!
+	bool gameLoaded = false;
+	HMODULE game_dll = nullptr;
+	while (!gameLoaded)
+	{
+		auto sd_module = GetModuleHandle("mhfo.dll");
+		auto hd_module = GetModuleHandle("mhfo-hd.dll");
+		if (sd_module)
+		{
+			game_dll = sd_module;
+			gameLoaded = true;
+		}
+		if (hd_module)
+		{
+			game_dll = hd_module;
+			gameLoaded = true;
+		}
+		Sleep(1000);
+	}
 
+	memory::pattern_batch crypt_batch;
+	crypt_batch.add("Encrypt Function", "E8 ? ? ? ? 8B 97 ? ? ? ? 8B 84 97 ? ? ? ?", [](memory::handle ptr)
+	{
+		enc = ptr.add(1).rip().as<PacketFn>();
+	});
+
+	crypt_batch.add("Decrypt Function", "E8 ? ? ? ? 66 8B 57 1A 66 3B 95 ? ? ? ? ", [](memory::handle ptr)
+	{
+		dec = ptr.add(1).rip().as<PacketFn>();
+	});
+
+	crypt_batch.run(memory::module(game_dll));
+
+	if (!enc || !dec)
+	{
+		Log("[ERROR] Finding enc or dec routines failed!");
+		Log("[ERROR] Found enc %i; Found dec %i", enc, dec);
+		return;
+	}
+	
 	return;
 }
 

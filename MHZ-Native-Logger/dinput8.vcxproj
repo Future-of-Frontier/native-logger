@@ -18,13 +18,25 @@
     <ClCompile Include="dinput8.c" />
     <ClCompile Include="keyboard.c" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="memory\module.cpp" />
+    <ClCompile Include="memory\pattern.cpp" />
+    <ClCompile Include="memory\pattern_batch.cpp" />
+    <ClCompile Include="memory\range.cpp" />
     <ClCompile Include="proxy_idi.c" />
     <ClCompile Include="proxy_idid.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="common.hpp" />
     <ClInclude Include="dinputproxy.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="Logger.hpp" />
+    <ClInclude Include="memory\all.hpp" />
+    <ClInclude Include="memory\fwddec.hpp" />
+    <ClInclude Include="memory\handle.hpp" />
+    <ClInclude Include="memory\module.hpp" />
+    <ClInclude Include="memory\pattern.hpp" />
+    <ClInclude Include="memory\pattern_batch.hpp" />
+    <ClInclude Include="memory\range.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4C5DA8B1-52AE-4D21-AAAF-64FC5E197475}</ProjectGuid>
@@ -69,6 +81,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;DINPUT8_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
